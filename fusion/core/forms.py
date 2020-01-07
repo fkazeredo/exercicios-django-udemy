@@ -1,6 +1,5 @@
 from django import forms
 from django.core.mail.message import EmailMessage
-from .models import Produto
 
 
 class ContatoForm(forms.Form):
@@ -17,18 +16,10 @@ class ContatoForm(forms.Form):
         conteudo = f'Nome: {self.nome}\nE-mail: {self.email}\nAssunto: {self.assunto}\nMensagem: {self.mensagem}'
 
         mail = EmailMessage(
-            subject='E-mail enviado pelo sistema Django2',
+            subject=self.assunto,
             body=conteudo,
             from_email='contato@dominio.com.br',
             to=['contato@dominio.com.br', ],
             headers={'Reply-To': self.email}
         )
         mail.send()
-
-
-class ProdutoModelForm(forms.ModelForm):
-    data_de_compra = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y',))
-
-    class Meta:
-        model = Produto
-        fields = ['nome', 'preco', 'estoque', 'imagem', 'data_de_compra']
